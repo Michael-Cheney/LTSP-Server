@@ -1,0 +1,8 @@
+---
+# handlers file for mc.configure
+- name: Restart dnsmasq
+  service: name=dnsmasq state=restarted
+- name: Restart NetworkManager
+  service: name=network-manager state=restarted
+- name: Update Kernels
+  command: /usr/share/ltsp/update-kernels

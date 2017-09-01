@@ -1,0 +1,31 @@
+---
+# tasks file for mc.configure
+- name: Configure dnsmasq
+  command: ltsp-config dnsmasq creates=/etc/dnsmasq.d/ltsp-server-dnsmasq.conf
+  notify: Restart dnsmasq
+- lineinfile:
+    path: /etc/ltsp/update-kernels.conf
+    regexp: 'IPAPPEND=3'
+    line: 'IPAPPEND=3'
+    state: present
+  notify: Update Kernels
+- name: Generate lts.conf
+  command: ltsp-config lts.conf -o creates=/var/lib/tftpboot/ltsp/amd64/lts.conf
+- lineinfile:
+    path: /etc/NetworkManager/NetworkManager.conf
+    regexp: '.*dns=dnsmasq'
+    line: '#dns=dnsmasq'
+    state: present
+  notify: Restart NetworkManager
+- lineinfile:
+    path: /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
+    regexp: '.*port=0'
+    line: '#port=0'
+    state: present
+  notify: Restart NetworkManager
+- lineinfile:
+    path: /etc/dnsmasq.conf
+    regexp: '#dhcp-range=192.168.0.50,192.168.0.150,12h'
+    line: 'dhcp-range={{dhcp_pool_start}},{{dhcp_pool_finish}},12h'
+    state: present
+  notify: Restart dnsmasq

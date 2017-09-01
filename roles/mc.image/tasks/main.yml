@@ -1,0 +1,4 @@
+---
+# tasks file for mc.image
+- name: Generate Client Image
+  command: ltsp-update-image --cleanup / creates=/opt/ltsp/images/amd64.img

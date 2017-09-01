@@ -1,0 +1,14 @@
+---
+# tasks file for mc.installpackages
+- name: Add the ondrej PHP PPA
+  apt_repository: repo='ppa:ts.sch.gr'
+- name: Update the apt cache
+  apt: update_cache=yes cache_valid_time=3600
+- name: Install Server Packages
+  apt: name={{item}} state=latest install_recommends=yes
+  with_items:
+    - remmina
+    - ltsp-server-standalone
+    - dnsmasq
+    - ltsp-client
+    - ldm-ubuntu-theme
