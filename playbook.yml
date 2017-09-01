@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - role: mc.installpackages
+    - role: mc.configure
+      dhcp_pool_start: 192.168.33.180
+      dhcp_pool_finish: 192.168.33.200
+    - role: mc.image
